@@ -1,5 +1,3 @@
-import { isNull, not } from "@fxts/core";
-
 interface FocusableItem {
   element: HTMLElement;
   tabIndex: number;
