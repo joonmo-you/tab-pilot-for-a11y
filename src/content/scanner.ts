@@ -1,9 +1,9 @@
-interface FocusableItem {
+export type FocusableItem = {
   element: HTMLElement;
   tabIndex: number;
   order: number;
   hasPositiveTabIndex: boolean;
-}
+};
 
 const FocusableSelectors = [
   "a[href]",
