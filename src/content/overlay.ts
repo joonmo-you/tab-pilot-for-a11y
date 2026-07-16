@@ -24,7 +24,7 @@ export function renderOverlay(items: Array<FocusableItem>) {
     return { x: rect.left + window.scrollX + rect.width / 2, y: rect.top + window.scrollY + rect.height / 2 };
   });
 
-  centers.forEach((_, index) => {
+  for (let index = 0; index < centers.length - 1; index++) {
     let line = document.createElementNS(SVG_NAMESPACE, "line");
     line.setAttribute("x1", String(centers[index].x));
     line.setAttribute("y1", String(centers[index].y));
@@ -32,7 +32,7 @@ export function renderOverlay(items: Array<FocusableItem>) {
     line.setAttribute("y2", String(centers[index + 1].y));
     line.classList.add("#tp=line");
     svg.appendChild(line);
-  });
+  }
 
   for (const item of items) {
     let rect = {
