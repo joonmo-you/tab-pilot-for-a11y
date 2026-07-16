@@ -18,6 +18,7 @@ export function renderOverlay(items: Array<FocusableItem>) {
   container.id = CONTAINER_ID;
   svg.setAttribute("width", String(document.documentElement.scrollWidth));
   svg.setAttribute("height", String(document.documentElement.scrollHeight));
+  svg.classList.add("tpa-lines");
 
   let centers = items.map(({ element }) => {
     let rect = element.getBoundingClientRect();
@@ -30,15 +31,16 @@ export function renderOverlay(items: Array<FocusableItem>) {
     line.setAttribute("y1", String(centers[index].y));
     line.setAttribute("x2", String(centers[index + 1].x));
     line.setAttribute("y2", String(centers[index + 1].y));
-    line.classList.add("#tp=line");
+    line.classList.add("tpa-line");
     svg.appendChild(line);
   }
+  container.appendChild(svg);
 
   for (const item of items) {
     let rect = {
       ...item.element.getBoundingClientRect(),
-      left: item.element.getBoundingClientRect().left + window.screenX,
-      top: item.element.getBoundingClientRect().top + window.screenY,
+      left: item.element.getBoundingClientRect().left + window.scrollX,
+      top: item.element.getBoundingClientRect().top + window.scrollY,
     };
 
     let box = document.createElement("div");
@@ -46,11 +48,14 @@ export function renderOverlay(items: Array<FocusableItem>) {
     box.style.top = `${rect.top}px`;
     box.style.width = `${rect.width}px`;
     box.style.height = `${rect.height}px`;
+    box.classList.add("tpa-box");
 
     let badge = document.createElement("span");
     badge.textContent = item.hasPositiveTabIndex ? `${item.order} ⚠tabindex: ${item.tabIndex}` : String(item.order);
+    badge.classList.add("tpa-badge");
 
-    container.appendChild(box.appendChild(badge));
+    box.appendChild(badge);
+    container.appendChild(box);
   }
 
   document.documentElement.appendChild(container);
