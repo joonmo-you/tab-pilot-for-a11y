@@ -1,14 +1,19 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import App from './views/App.tsx'
+import { renderOverlay } from "./overlay.ts";
+import { scanTabOrder } from "./scanner.ts";
+import "./overlay.css";
 
-console.log('[CRXJS] Hello world from content script!')
+console.log("[CRXJS] Hello world from content script!");
 
-const container = document.createElement('div')
-container.id = 'crxjs-app'
-document.body.appendChild(container)
-createRoot(container).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+let items = scanTabOrder();
+console.log(`[TabPilotForA11y] 포커스 가능 요소 ${items.length}개 발견`);
+
+console.table(
+  items.map(({ order, tabIndex, element }) => ({
+    order,
+    tabIndex,
+    tag: element.tagName.toLowerCase(),
+    text: (element.textContent ?? "").trim().slice(0, 30),
+  })),
+);
+
+renderOverlay(scanTabOrder());
