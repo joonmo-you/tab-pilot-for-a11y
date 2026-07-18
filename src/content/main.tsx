@@ -1,19 +1,34 @@
-import { renderOverlay } from "./overlay.ts";
+import { match } from "ts-pattern";
+
+import { removeOverlay, renderOverlay } from "./overlay.ts";
 import { scanTabOrder } from "./scanner.ts";
+
 import "./overlay.css";
 
-console.log("[CRXJS] Hello world from content script!");
+let active = false;
 
-let items = scanTabOrder();
-console.log(`[TabPilotForA11y] 포커스 가능 요소 ${items.length}개 발견`);
+function refresh() {
+  if (!active) return;
+  renderOverlay(scanTabOrder());
+}
 
-console.table(
-  items.map(({ order, tabIndex, element }) => ({
-    order,
-    tabIndex,
-    tag: element.tagName.toLowerCase(),
-    text: (element.textContent ?? "").trim().slice(0, 30),
-  })),
-);
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+  match(message)
+    .with({ type: "TOGGLE" }, () => {
+      active = !active;
+      active ? refresh() : removeOverlay();
+      sendResponse({ active });
+    })
+    .with({ type: "GET_STATE" }, () => {
+      sendResponse({ active });
+    });
+});
 
 renderOverlay(scanTabOrder());
+
+let resizeTimer: number | undefined;
+
+window.addEventListener("resize", () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = window.setTimeout(refresh, 150);
+});
