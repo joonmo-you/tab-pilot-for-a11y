@@ -24,8 +24,6 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
     });
 });
 
-renderOverlay(scanTabOrder());
-
 let resizeTimer: number | undefined;
 
 window.addEventListener("resize", () => {
