@@ -5,11 +5,14 @@ export default defineManifest({
   name: "TabPilotForA11y",
   version: "0.1.0",
   icons: {
-    48: "public/logo.png",
+    16: "public/icons/icon-16.png",
+    48: "public/icons/icon-48.png",
+    128: "public/icons/icon-128.png",
   },
   action: {
     default_icon: {
-      48: "public/logo.png",
+      16: "public/icons/icon-16.png",
+      48: "public/icons/icon-48.png",
     },
     default_popup: "src/popup/index.html",
     default_title: "TabPilotForA11y",
