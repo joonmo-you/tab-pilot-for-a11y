@@ -17,14 +17,11 @@ export default defineManifest({
     default_popup: "src/popup/index.html",
     default_title: "TabPilotForA11y",
   },
-  permissions: ["activeTab", "sidePanel", "contentSettings"],
+  permissions: ["activeTab", "contentSettings"],
   content_scripts: [
     {
       js: ["src/content/main.tsx"],
       matches: ["<all_urls>"],
     },
   ],
-  side_panel: {
-    default_path: "src/sidepanel/index.html",
-  },
 });
